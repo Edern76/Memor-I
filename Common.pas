@@ -49,7 +49,7 @@ procedure RemoveFromArray(var arr : PossibleChoices; index : Integer);
 {Obtiens un type de carte aléatoire de la liste des choix restants, et modifie celle-ci en conséquence}
 procedure RandomCard(var choices : PossibleChoices; var chosenType : TCardType);
 
-
+operator = (t1, t2 : TCardType) b : Boolean;
 
 {Crée la zone de jeu et dispose les cartes}
 function CreateGrid(choices : PossibleChoices; easy : Boolean) : Grid;
@@ -57,6 +57,18 @@ function CreateGrid(choices : PossibleChoices; easy : Boolean) : Grid;
 
 
 implementation
+
+operator = (t1, t2 : TCardType) b : Boolean;
+	BEGIN
+	if ((t1.Name = t2.Name) and (t1.ImgPath = t2.ImgPath)) then
+		BEGIN
+		b := True;
+		END
+	else
+		BEGIN
+		b := False
+		END
+	END;
 
 function InitTypes() : CardTypes;
 	BEGIN

@@ -3,7 +3,7 @@ unit GameLogic;
 interface
 uses Common;
 
-procedure RetourneCarte(var carte : TCard);
+procedure RetourneCarte(j : Integer; var carte : TCard);
 
 function Victoire(g : Grid) : Boolean;
 
@@ -22,17 +22,19 @@ var i : Integer;
 
 	BEGIN
 		i:=0;
-			if i=0 then
-				inc(i);
-			else
-			
+		if i=0 then
+			BEGIN
+			inc(i);
+			END
+		else
+			BEGIN
 			if i=1 then
 				carte.Selected := True;
-		
-		if carte.CardType = cartePrecedente.CardType then
-			begin
-			end;
 			
+			if carte.CardType = cartePrecedente.CardType then
+				begin
+				end;
+			END
 		
 	END;
 
@@ -42,12 +44,6 @@ function Victoire(g : Grid) : Boolean;
 	
 	END;
 	
-{}
-procedure 
-	BEGIN
-	
-	
-	END;
 	
 END.
 
