@@ -89,7 +89,7 @@ procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean; sprites :
 		for i := 0 to dim-1 do
 			BEGIN
 
-			startX := (WIDTH - dim*((totalWidth div dim + remainWidth))) div 2;
+			startX := (WIDTH div 2) - actualTotalWidth;
 			x := startX + i*((totalWidth div dim + remainWidth)) ;
 {
 			totX := ((WIDTH - 2*startX) - actualtotalWidth) div 2;
