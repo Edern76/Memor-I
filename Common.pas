@@ -30,7 +30,7 @@ end;
 Type PossibleChoices = array of TCardChoice; //Taille volontairement omise, cela crée un tableau dont on peut modifier la taille avec la procédure SetLength(tableau, taille) implémentée de base en Pascal (donc pas Goblet of Fire)
 
 {Grille sur laquelle sont disposées les cartes}
-Type Grid = array[1..MAX_DIM, 1..MAX_DIM] of TCard; //Oui, j'aime quand les tableaux commencent à 0 (et c'est surtout plus pratique parce que random est indexé à 0)
+Type Grid = array[0..MAX_DIM - 1, 0..MAX_DIM-1] of TCard; //Oui, j'aime quand les tableaux commencent à 0 (et c'est surtout plus pratique parce que random est indexé à 0)
 
 {Tous les types de cartes}
 Type CardTypes = array[0..MAX_TYPES-1] of TCardType;
@@ -74,41 +74,41 @@ function InitTypes() : CardTypes;
 	BEGIN
 	//Pas une boucle car à terme, les cartes auront probablement des noms/noms de fichier plus expressifs que TestN.png
 	InitTypes[0].Name := 'Card0';
-	InitTypes[0].Name := 'Test0.png';
+	InitTypes[0].ImgPath := 'Test0.png';
 	InitTypes[1].Name := 'Card1';
-	InitTypes[1].Name := 'Test1.png';
+	InitTypes[1].ImgPath := 'Test1.png';
 	InitTypes[2].Name := 'Card2';
-	InitTypes[2].Name := 'Test2.png';
-	InitTypes[3].Name := 'Test3.png';
+	InitTypes[2].ImgPath := 'Test2.png';
 	InitTypes[3].Name := 'Card3';
-	InitTypes[4].Name := 'Test4.png';
+	InitTypes[3].ImgPath := 'Test3.png';
 	InitTypes[4].Name := 'Card4';
-	InitTypes[5].Name := 'Test5.png';
-	InitTypes[5].Name := 'Test5.png';
+	InitTypes[4].ImgPath := 'Test4.png';
+	InitTypes[5].Name := 'Card5';
+	InitTypes[5].ImgPath := 'Test5.png';
 	InitTypes[6].Name := 'Card6';
-	InitTypes[6].Name := 'Test6.png';
+	InitTypes[6].ImgPath := 'Test6.png';
 	InitTypes[7].Name := 'Card7';
-	InitTypes[7].Name := 'Test7.png';
+	InitTypes[7].ImgPath := 'Test7.png';
 	InitTypes[8].Name := 'Card8';
-	InitTypes[8].Name := 'Test8.png';
+	InitTypes[8].ImgPath := 'Test8.png';
 	InitTypes[9].Name := 'Card9';
-	InitTypes[9].Name := 'Test9.png';
+	InitTypes[9].ImgPath := 'Test9.png';
 	InitTypes[10].Name := 'Card10';
-	InitTypes[10].Name := 'Test10.png';
+	InitTypes[10].ImgPath := 'Test10.png';
 	InitTypes[11].Name := 'Card11';
-	InitTypes[11].Name := 'Test11.png';
+	InitTypes[11].ImgPath := 'Test11.png';
 	InitTypes[12].Name := 'Card12';
-	InitTypes[12].Name := 'Test12.png';
+	InitTypes[12].ImgPath := 'Test12.png';
 	InitTypes[13].Name := 'Card13';
-	InitTypes[13].Name := 'Test13.png';
+	InitTypes[13].ImgPath := 'Test13.png';
 	InitTypes[14].Name := 'Card14';
-	InitTypes[14].Name := 'Test14.png';
+	InitTypes[14].ImgPath := 'Test14.png';
 	InitTypes[15].Name := 'Card15';
-	InitTypes[15].Name := 'Test15.png';
+	InitTypes[15].ImgPath := 'Test15.png';
 	InitTypes[16].Name := 'Card16';
-	InitTypes[16].Name := 'Test16.png';
+	InitTypes[16].ImgPath := 'Test16.png';
 	InitTypes[17].Name := 'Card17';
-	InitTypes[17].Name := 'Test17.png';
+	InitTypes[17].ImgPath := 'Test17.png';
 	END;
 	
 function InitChoices(types: CardTypes; easy : Boolean) : PossibleChoices;
@@ -168,8 +168,8 @@ function CreateGrid(choices : PossibleChoices; easy : Boolean) : Grid;
 		maxDim := 6; // Carré de 6x6
 		END;
 	
-	for i:= 1 to maxDim do
-		for j:=1 to maxDim do
+	for i:= 0 to maxDim-1 do
+		for j:=0 to maxDim-1 do
 			BEGIN
 			RandomCard(choices, CreateGrid[i][j].CardType);
 			CreateGrid[i][j].x := i;

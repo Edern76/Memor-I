@@ -5,12 +5,15 @@ interface
 uses Common, sdl, sdl_image;
 
 const MAX_SPRITES = 100;
-const HEIGHT = 720;
+const HEIGHT = 900;
 const WIDTH = 1280;
 const SPRITE_DEFAULT_HEIGHT = 120;
 const SPRITE_DEFAULT_WIDTH = 80;
-const V_PADDING = 10;
-const H_PADDING = 5;
+const V_PADDING = 20;
+const H_PADDING = 80;
+
+const X_BIAS = 20;
+const Y_BIAS = 0;
 
 
 Type Sprite = record
@@ -27,9 +30,9 @@ procedure GetInput();
 
 procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer);
 
-procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean; sprites : SpritesList);
+procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean);
 
-
+var G_sprites : SpritesList;
 
 implementation
 
@@ -37,7 +40,7 @@ function InitRender() : PSDL_SURFACE;
 	BEGIN
 	SDL_Init(SDL_INIT_VIDEO);
 	
-	InitRender := SDL_SETVIDEOMODE(1280, 720, 32, SDL_HWSURFACE);
+	InitRender := SDL_SETVIDEOMODE(WIDTH, HEIGHT, 32, SDL_HWSURFACE);
 	END;
 	
 function LoadSprites() : SpritesList;
@@ -45,6 +48,7 @@ function LoadSprites() : SpritesList;
 	LoadSprites[0].Name := 'TestBack';
 	LoadSprites[0].Image := IMG_Load('Images/TestBack.png');
 	END;
+
 	
 procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer);
 	var destination: TSDL_RECT;
@@ -63,8 +67,41 @@ procedure GetInput();
 	
 	END;
 	
-procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean; sprites : SpritesList);
-	var x,y,i,j, dim, startX, startY, offX, offY, totX, totEndX, totalWidth, totY, totEndY, totalHeight, remainWidth, remainHeight, actualTotalWidth : Integer;
+procedure DrawCard(window : PSDL_SURFACE; easy : Boolean; card : TCard);
+	var totalWidth, startX, totalHeight, startY, dim, x,y : Integer;
+		cSprite : Sprite;
+	BEGIN
+	
+	if (easy) then
+		BEGIN
+		dim := 4;
+		END
+	else
+		BEGIN
+		dim := 6;
+		END;
+		
+	totalWidth := (dim * (SPRITE_DEFAULT_WIDTH + H_PADDING)) - H_PADDING;
+	startX := ((WIDTH - totalWidth) div 2) + X_BIAS;
+	totalHeight := (dim *(SPRITE_DEFAULT_HEIGHT + V_PADDING)) - V_PADDING;
+	startY := ((HEIGHT - totalHeight) div 2) + Y_BIAS;
+	
+	if (card.Revealed or card.Selected) then
+		BEGIN
+		//Select sprite corresponding to card image once they are implemented
+		cSprite := G_Sprites[0]; // PLACEHOLDER
+		END
+	else
+		BEGIN
+		cSprite := G_Sprites[0]; //Card back
+		END;
+	x := startX + card.x*(totalWidth div dim) ;
+	y := startY + card.y*(totalHeight div dim);
+	DrawSprite(window, cSprite, x, y);
+	END;
+
+procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean);
+	var i,j,dim : Integer;
 	BEGIN
 	if (easy) then
 		BEGIN
@@ -74,35 +111,11 @@ procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean; sprites :
 		BEGIN
 		dim := 6;
 		END;
-	offX := 5;
-	offY := 20;
-	
-	actualTotalWidth := WIDTH - 2*offX;
-	totalWidth := dim * (SPRITE_DEFAULT_WIDTH + H_PADDING);
-	remainWidth := (actualTotalWidth - totalWidth) div dim;//((WIDTH - 2*offX) div dim) - (SPRITE_DEFAULT_WIDTH + H_PADDING);
-	
-	writeln(totalWidth);
-	writeln(WIDTH - 2*offX);
-	writeln((WIDTH-2*offX) div dim);
-	writeln(remainWidth);
-	for j := 1 to dim do
-		for i := 0 to dim-1 do
-			BEGIN
 
-			startX := (WIDTH - dim*((totalWidth div dim + remainWidth))) div 2;
-			x := startX + i*((totalWidth div dim + remainWidth)) ;
-{
-			totX := ((WIDTH - 2*startX) - actualtotalWidth) div 2;
-			totEndX := totX + totalWidth;
-			x := (totEndX div dim) * i;
-			writeln(totX);
-			totalHeight := dim * (SPRITE_DEFAULT_HEIGHT + V_PADDING);
-			startY := ((HEIGHT - totalHeight) div 2);
-			totY := ((HEIGHT - 2*startY) - totalHeight) div 2;
-			totEndY := totY + totalHeight;
-			y := (totEndY div dim) * j;
-}
-			DrawSprite(window, sprites[0], x,0);
+	for j := 0 to dim-1 do
+		for i := 0 to dim-1 do
+			BEGIN		
+			DrawCard(window, easy, grid[i][j]);
 			END
 	
 	END;
