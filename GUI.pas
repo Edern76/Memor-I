@@ -13,7 +13,7 @@ const V_PADDING = 20;
 const H_PADDING = 80;
 
 const X_BIAS = 20;
-const Y_BIAS = 0;
+const Y_BIAS = 10;
 
 
 Type Sprite = record
