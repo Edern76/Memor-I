@@ -8,3 +8,5 @@
 github.sh
 Main
 *.dll
+
+*/Thumbs.db
