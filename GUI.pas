@@ -10,7 +10,7 @@ const WIDTH = 1280;
 const SPRITE_DEFAULT_HEIGHT = 120;
 const SPRITE_DEFAULT_WIDTH = 80;
 const V_PADDING = 10;
-const H_PADDING = 50;
+const H_PADDING = 5;
 
 
 Type Sprite = record
@@ -64,7 +64,7 @@ procedure GetInput();
 	END;
 	
 procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean; sprites : SpritesList);
-	var x,y,i,j, dim, startX, startY, totX, totEndX, totalWidth, totY, totEndY, totalHeight : Integer;
+	var x,y,i,j, dim, startX, startY, offX, offY, totX, totEndX, totalWidth, totY, totEndY, totalHeight, remainWidth, remainHeight, actualTotalWidth : Integer;
 	BEGIN
 	if (easy) then
 		BEGIN
@@ -74,24 +74,35 @@ procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean; sprites :
 		BEGIN
 		dim := 6;
 		END;
-	startX := 20;
-	startY := 20;
+	offX := 5;
+	offY := 20;
 	
+	actualTotalWidth := WIDTH - 2*offX;
+	totalWidth := dim * (SPRITE_DEFAULT_WIDTH + H_PADDING);
+	remainWidth := (actualTotalWidth - totalWidth) div dim;//((WIDTH - 2*offX) div dim) - (SPRITE_DEFAULT_WIDTH + H_PADDING);
+	
+	writeln(totalWidth);
+	writeln(WIDTH - 2*offX);
+	writeln((WIDTH-2*offX) div dim);
+	writeln(remainWidth);
 	for j := 1 to dim do
-		for i := 1 to dim do
+		for i := 0 to dim-1 do
 			BEGIN
-			totalWidth := dim * (SPRITE_DEFAULT_WIDTH + H_PADDING);
+
 			startX := (WIDTH - totalWidth) div 2;
-			totX := ((WIDTH - 2*startX) - totalWidth) div 2;
+			x := offX + i*((totalWidth div dim + remainWidth)) ;
+{
+			totX := ((WIDTH - 2*startX) - actualtotalWidth) div 2;
 			totEndX := totX + totalWidth;
 			x := (totEndX div dim) * i;
 			writeln(totX);
 			totalHeight := dim * (SPRITE_DEFAULT_HEIGHT + V_PADDING);
-			startY := (HEIGHT - totalHeight) div 2;
+			startY := ((HEIGHT - totalHeight) div 2);
 			totY := ((HEIGHT - 2*startY) - totalHeight) div 2;
 			totEndY := totY + totalHeight;
 			y := (totEndY div dim) * j;
-			DrawSprite(window, sprites[0], x,y);
+}
+			DrawSprite(window, sprites[0], x,0);
 			END
 	
 	END;
