@@ -13,10 +13,13 @@ window := InitRender();
 easy := False;
 win := False;
 quit := False;
+curX := 0;
+curY := 0;
 //SDL_SetRenderDrawColor(window, 255, 255; 255, SDL_ALPHA_OPAQUE);
 //SDL_RenderClear(window);
 repeat
 	DrawGrid(window, CreateGrid(InitChoices(InitTypes(), easy), easy), easy);
+	DrawCursor(window, curX, curY, easy);
 	SDL_Flip(window);
 	GetInput(win, quit);
 until (win or quit);

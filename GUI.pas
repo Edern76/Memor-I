@@ -9,6 +9,10 @@ const HEIGHT = 900;
 const WIDTH = 1280;
 const SPRITE_DEFAULT_HEIGHT = 120;
 const SPRITE_DEFAULT_WIDTH = 80;
+
+const CURSOR_WIDTH = 2;
+const CURSOR_HEIGHT = 2;
+
 const V_PADDING = 20;
 const H_PADDING = 80;
 
@@ -33,7 +37,14 @@ procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y, width, height 
 
 procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean);
 
+function GridToGlobalCoords(x,y : Integer; easy : Boolean) : TCoord;
+function GetDim(easy : boolean) : Integer;
+function GetSprite(name : String) : Sprite;
+
+procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer; easy : Boolean);
+
 var G_sprites : SpritesList;
+	curX, curY : Integer;
 
 implementation
 
@@ -48,8 +59,39 @@ function LoadSprites() : SpritesList;
 	BEGIN
 	LoadSprites[0].Name := 'TestBack';
 	LoadSprites[0].Image := IMG_Load('Images/TestBack.png');
+	LoadSprites[1].Name := 'Cursor';
+	LoadSprites[1].Image := IMG_Load('Images/Cursor.png');
 	END;
 
+function GetDim(easy : boolean) : Integer;
+	BEGIN
+	if (easy) then
+		BEGIN
+		GetDim := 4;
+		END
+	else
+		BEGIN
+		GetDim := 6;
+		END;
+	END;
+	
+function GetSprite(name : String) : Sprite;
+	var i : Integer;
+		found : Boolean;
+	BEGIN
+	found := False;
+	for i:= 0 to 100 do
+		BEGIN
+		if (G_sprites[i].Name = name) then
+			BEGIN
+			GetSprite := G_sprites[i];
+			found := True;
+			break;
+			END
+		END;
+	if (not found) then
+		writeln('ERROR : Could not find sprite named ', name);
+	END;
 	
 procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer)  overload;
 	var destination: TSDL_RECT;
@@ -76,8 +118,6 @@ procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y, width, height:
 procedure GetInput(var win, quit : Boolean);
 	var event : PSDL_EVENT;
 	BEGIN
-	
-	
 	SDL_PollEvent(event);
 	
 	case event.type_ of
@@ -91,14 +131,7 @@ procedure GetInput(var win, quit : Boolean);
 function GridToGlobalCoords(x,y : Integer; easy : Boolean) : TCoord;
 	var totalWidth, startX, totalHeight, startY, dim : Integer;
 	BEGIN
-	if (easy) then
-		BEGIN
-		dim := 4;
-		END
-	else
-		BEGIN
-		dim := 6;
-		END;
+	dim := GetDim(easy);
 		
 	totalWidth := (dim * (SPRITE_DEFAULT_WIDTH + H_PADDING)) - H_PADDING;
 	startX := ((WIDTH - totalWidth) div 2) + X_BIAS;
@@ -124,30 +157,35 @@ procedure DrawCard(window : PSDL_SURFACE; easy : Boolean; card : TCard);
 		END
 	else
 		BEGIN
-		cSprite := G_Sprites[0]; //Card back
+		cSprite := GetSprite('TestBack'); //Card back
 		END;
 	pos := GridToGlobalCoords(card.x, card.y, easy);
 	DrawSprite(window, cSprite, pos.x, pos.y);
+	END;
+	
+procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer; easy : Boolean);
+	var cardPos : TCoord;
+		actualX, actualY : Integer;
+	BEGIN
+	cardPos := GridToGlobalCoords(x, y, easy);
+	actualX := cardPos.X - CURSOR_WIDTH;
+	actualY := cardPos.Y - CURSOR_HEIGHT;
+	
+	DrawSprite(window, GetSprite('Cursor'), actualX, actualY);
+	
 	END;
 
 procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean);
 	var i,j,dim : Integer;
 	BEGIN
-	if (easy) then
-		BEGIN
-		dim := 4;
-		END
-	else
-		BEGIN
-		dim := 6;
-		END;
 
+	dim := GetDim(easy);
+	
 	for j := 0 to dim-1 do
 		for i := 0 to dim-1 do
 			BEGIN		
 			DrawCard(window, easy, grid[i][j]);
 			END
-	
 	END;
 
 END.
