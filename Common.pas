@@ -45,7 +45,7 @@ function InitTypes() : CardTypes;
 {Crée la liste des types de cartes à mettre sur la grille}
 {@param types : Tableau des types possibles, crée avec InitTypes}
 {@param easy : Vrai si l'utilisateur joue avec 16 cartes, faux si il joue avec 36}	
-function InitChoices(types : CardTypes; easy : Boolean) : PossibleChoices;
+function InitChoices(types : CardTypes) : PossibleChoices;
 
 {Retire un élément à une position donnée d'un tableau}
 procedure RemoveFromArray(var arr : PossibleChoices; index : Integer);
@@ -56,9 +56,9 @@ procedure RandomCard(var choices : PossibleChoices; var chosenType : TCardType);
 operator = (t1, t2 : TCardType) b : Boolean;
 
 {Crée la zone de jeu et dispose les cartes}
-function CreateGrid(choices : PossibleChoices; easy : Boolean) : Grid;
+function CreateGrid(choices : PossibleChoices) : Grid;
 
-
+var easy : Boolean;
 
 implementation
 
@@ -115,7 +115,7 @@ function InitTypes() : CardTypes;
 	InitTypes[17].ImgPath := 'Test17.png';
 	END;
 	
-function InitChoices(types: CardTypes; easy : Boolean) : PossibleChoices;
+function InitChoices(types: CardTypes) : PossibleChoices;
 	var i, maxI : Integer;
 	BEGIN
 	if (easy) then
@@ -160,7 +160,7 @@ procedure RandomCard(var choices : PossibleChoices; var chosenType : TCardType);
 		END
 	END;
 	
-function CreateGrid(choices : PossibleChoices; easy : Boolean) : Grid;
+function CreateGrid(choices : PossibleChoices) : Grid;
 	var maxDim, i, j : Integer;
 	BEGIN
 	if (easy) then

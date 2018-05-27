@@ -35,13 +35,14 @@ procedure GetInput(var win, quit : Boolean);
 procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer)  overload;
 procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y, width, height : Integer)  overload;
 
-procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean);
+procedure DrawGrid(window : PSDL_SURFACE; grid : Grid);
+procedure MoveCursor(dx, dy : Integer);
 
-function GridToGlobalCoords(x,y : Integer; easy : Boolean) : TCoord;
+function GridToGlobalCoords(x,y : Integer) : TCoord;
 function GetDim(easy : boolean) : Integer;
 function GetSprite(name : String) : Sprite;
 
-procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer; easy : Boolean);
+procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer);
 
 var G_sprites : SpritesList;
 	curX, curY : Integer;
@@ -51,6 +52,7 @@ implementation
 function InitRender() : PSDL_SURFACE;
 	BEGIN
 	SDL_Init(SDL_INIT_VIDEO);
+	SDL_EnableKeyRepeat(1000, 100);
 	
 	InitRender := SDL_SETVIDEOMODE(WIDTH, HEIGHT, 32, SDL_HWSURFACE);
 	END;
@@ -116,19 +118,33 @@ procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y, width, height:
 	END;
 	
 procedure GetInput(var win, quit : Boolean);
+	//273 : UP
+	//274 : DOWN
+	//275 : RIGHT
+	//276 : LEFT
 	var event : PSDL_EVENT;
 	BEGIN
 	SDL_PollEvent(event);
 	
 	case event.type_ of
 		SDL_QUITEV : quit := True;
+		SDL_KEYDOWN : 
+			BEGIN
+			writeln(event.key.keysym.sym);
+			case event.key.keysym.sym of
+				273 : MoveCursor(0, -1);
+				274 : MoveCursor(0, 1);
+				275 : MoveCursor(1, 0);
+				276 : MoveCursor(-1, 0);
+			END;
+			END
 		
 	END;
 	END;
 
 
 
-function GridToGlobalCoords(x,y : Integer; easy : Boolean) : TCoord;
+function GridToGlobalCoords(x,y : Integer) : TCoord;
 	var totalWidth, startX, totalHeight, startY, dim : Integer;
 	BEGIN
 	dim := GetDim(easy);
@@ -144,7 +160,7 @@ function GridToGlobalCoords(x,y : Integer; easy : Boolean) : TCoord;
 	
 	END;
 
-procedure DrawCard(window : PSDL_SURFACE; easy : Boolean; card : TCard);
+procedure DrawCard(window : PSDL_SURFACE; card : TCard);
 	var pos : TCoord;
 		cSprite : Sprite;
 	BEGIN
@@ -159,23 +175,38 @@ procedure DrawCard(window : PSDL_SURFACE; easy : Boolean; card : TCard);
 		BEGIN
 		cSprite := GetSprite('TestBack'); //Card back
 		END;
-	pos := GridToGlobalCoords(card.x, card.y, easy);
+	pos := GridToGlobalCoords(card.x, card.y);
 	DrawSprite(window, cSprite, pos.x, pos.y);
 	END;
 	
-procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer; easy : Boolean);
+procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer);
 	var cardPos : TCoord;
 		actualX, actualY : Integer;
 	BEGIN
-	cardPos := GridToGlobalCoords(x, y, easy);
+	cardPos := GridToGlobalCoords(x, y);
 	actualX := cardPos.X - CURSOR_WIDTH;
 	actualY := cardPos.Y - CURSOR_HEIGHT;
 	
 	DrawSprite(window, GetSprite('Cursor'), actualX, actualY);
 	
 	END;
+	
+procedure MoveCursor(dx, dy : Integer);
+	var dim : Integer;
+	BEGIN
+	dim := GetDim(easy);
+	if ((dx >= 0) and (curX < (dim - 1))) then
+		curX := curX + dx;
+	if ((dx <= 0) and (curX > 0)) then
+		curX := curX + dx;
+	if ((dy >= 0) and (curY < (dim - 1))) then
+		curY := curY + dy;
+	if ((dy <= 0) and (curY > 0)) then
+		curY := curY + dy;
+	
+	END;
 
-procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean);
+procedure DrawGrid(window : PSDL_SURFACE; grid : Grid);
 	var i,j,dim : Integer;
 	BEGIN
 
@@ -184,7 +215,7 @@ procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean);
 	for j := 0 to dim-1 do
 		for i := 0 to dim-1 do
 			BEGIN		
-			DrawCard(window, easy, grid[i][j]);
+			DrawCard(window, grid[i][j]);
 			END
 	END;
 
