@@ -13,6 +13,10 @@ Type TCardType = record
 	ImgPath : String; //Chemin de l'image représentant la carte face révélée. L'image face cachée sera une constante définie en dehors de cette unité. Utilisé seulement pour l'interface en théorie
 end;
 
+Type TCoord = record
+	x, y : Integer;
+end;
+
 {Une carte individuelle en elle même. Contient sa position, son statut et son type (voir plus haut)}
 Type TCard = record
 	x, y : Integer;

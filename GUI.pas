@@ -26,9 +26,10 @@ Type SpritesList = array[0..100] of Sprite;
 function InitRender() : PSDL_SURFACE;
 function LoadSprites() : SpritesList;
 
-procedure GetInput();
+procedure GetInput(var win, quit : Boolean);
 
-procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer);
+procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer)  overload;
+procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y, width, height : Integer)  overload;
 
 procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean);
 
@@ -50,7 +51,7 @@ function LoadSprites() : SpritesList;
 	END;
 
 	
-procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer);
+procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer)  overload;
 	var destination: TSDL_RECT;
 	BEGIN
 	destination.x := x;
@@ -61,17 +62,35 @@ procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer);
 	SDL_BlitSurface(sprite.Image, NIL, window, @destination);
 	END;
 	
-procedure GetInput();
+procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y, width, height: Integer)  overload;
+	var destination: TSDL_RECT;
 	BEGIN
+	destination.x := x;
+	destination.y := y;
+	destination.w := width;
+	destination.h := height;
 	
-	
+	SDL_BlitSurface(sprite.Image, NIL, window, @destination);
 	END;
 	
-procedure DrawCard(window : PSDL_SURFACE; easy : Boolean; card : TCard);
-	var totalWidth, startX, totalHeight, startY, dim, x,y : Integer;
-		cSprite : Sprite;
+procedure GetInput(var win, quit : Boolean);
+	var event : PSDL_EVENT;
 	BEGIN
 	
+	
+	SDL_PollEvent(event);
+	
+	case event.type_ of
+		SDL_QUITEV : quit := True;
+		
+	END;
+	END;
+
+
+
+function GridToGlobalCoords(x,y : Integer; easy : Boolean) : TCoord;
+	var totalWidth, startX, totalHeight, startY, dim : Integer;
+	BEGIN
 	if (easy) then
 		BEGIN
 		dim := 4;
@@ -86,6 +105,18 @@ procedure DrawCard(window : PSDL_SURFACE; easy : Boolean; card : TCard);
 	totalHeight := (dim *(SPRITE_DEFAULT_HEIGHT + V_PADDING)) - V_PADDING;
 	startY := ((HEIGHT - totalHeight) div 2) + Y_BIAS;
 	
+	GridToGlobalCoords.x := startX + x*(totalWidth div dim) ;
+	GridToGlobalCoords.y := startY + y*(totalHeight div dim);
+	
+	
+	END;
+
+procedure DrawCard(window : PSDL_SURFACE; easy : Boolean; card : TCard);
+	var pos : TCoord;
+		cSprite : Sprite;
+	BEGIN
+
+	
 	if (card.Revealed or card.Selected) then
 		BEGIN
 		//Select sprite corresponding to card image once they are implemented
@@ -95,9 +126,8 @@ procedure DrawCard(window : PSDL_SURFACE; easy : Boolean; card : TCard);
 		BEGIN
 		cSprite := G_Sprites[0]; //Card back
 		END;
-	x := startX + card.x*(totalWidth div dim) ;
-	y := startY + card.y*(totalHeight div dim);
-	DrawSprite(window, cSprite, x, y);
+	pos := GridToGlobalCoords(card.x, card.y, easy);
+	DrawSprite(window, cSprite, pos.x, pos.y);
 	END;
 
 procedure DrawGrid(window : PSDL_SURFACE; grid : Grid; easy : Boolean);
