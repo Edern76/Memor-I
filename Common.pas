@@ -34,7 +34,7 @@ end;
 Type PossibleChoices = array of TCardChoice; //Taille volontairement omise, cela crée un tableau dont on peut modifier la taille avec la procédure SetLength(tableau, taille) implémentée de base en Pascal (donc pas Goblet of Fire)
 
 {Grille sur laquelle sont disposées les cartes}
-Type Grid = array[0..MAX_DIM - 1, 0..MAX_DIM-1] of TCard; //Oui, j'aime quand les tableaux commencent à 0 (et c'est surtout plus pratique parce que random est indexé à 0)
+Type TGrid = array[0..MAX_DIM - 1, 0..MAX_DIM-1] of TCard; //Oui, j'aime quand les tableaux commencent à 0 (et c'est surtout plus pratique parce que random est indexé à 0)
 
 {Tous les types de cartes}
 Type CardTypes = array[0..MAX_TYPES-1] of TCardType;
@@ -56,7 +56,7 @@ procedure RandomCard(var choices : PossibleChoices; var chosenType : TCardType);
 operator = (t1, t2 : TCardType) b : Boolean;
 
 {Crée la zone de jeu et dispose les cartes}
-function CreateGrid(choices : PossibleChoices) : Grid;
+function CreateTGrid(choices : PossibleChoices) : TGrid;
 
 var easy : Boolean;
 
@@ -160,9 +160,10 @@ procedure RandomCard(var choices : PossibleChoices; var chosenType : TCardType);
 		END
 	END;
 	
-function CreateGrid(choices : PossibleChoices) : Grid;
+function CreateTGrid(choices : PossibleChoices) : TGrid;
 	var maxDim, i, j : Integer;
 	BEGIN
+	writeln('Checking easy');
 	if (easy) then
 		BEGIN
 		maxDim := 4; // Carré de 4x4
@@ -171,15 +172,15 @@ function CreateGrid(choices : PossibleChoices) : Grid;
 		BEGIN
 		maxDim := 6; // Carré de 6x6
 		END;
-	
+	writeln('Easy done');
 	for i:= 0 to maxDim-1 do
 		for j:=0 to maxDim-1 do
 			BEGIN
-			RandomCard(choices, CreateGrid[i][j].CardType);
-			CreateGrid[i][j].x := i;
-			CreateGrid[i][j].y := j;
-			CreateGrid[i][j].Revealed := False;
-			CreateGrid[i][j].Selected := False;
+			RandomCard(choices, CreateTGrid[i][j].CardType);
+			CreateTGrid[i][j].x := i;
+			CreateTGrid[i][j].y := j;
+			CreateTGrid[i][j].Revealed := False;
+			CreateTGrid[i][j].Selected := False;
 			END;
 	END;
 	

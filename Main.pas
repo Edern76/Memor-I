@@ -6,6 +6,7 @@ uses GameLogic, GUI, Common, sdl, sdl_image;
 
 var window : PSDL_SURFACE;
 	win, quit : Boolean;
+	table : TGrid;
 
 BEGIN
 G_sprites := LoadSprites();
@@ -21,10 +22,16 @@ curY := 0;
 repeat
 	SDL_Delay(33); //Limite le jeu à 60 FPS, problème d'inputs dédoublés sinon.
 	SDL_FillRect(window, 0,0);
-	DrawGrid(window, CreateGrid(InitChoices(InitTypes())));
+	writeln('Before table');
+	table := CreateTGrid(InitChoices(InitTypes()));
+	writeln('Before draw');
+	DrawTGrid(window, table);
+	writeln('Before cursor');
 	DrawCursor(window, curX, curY);
+	writeln('Before flip');
 	SDL_Flip(window);
-	GetInput(win, quit);
+	writeln('Before input');
+	GetInput(win, quit, table);
 until (win or quit);
 
 if quit then

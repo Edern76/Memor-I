@@ -1,11 +1,12 @@
 unit GameLogic;
 
 interface
+
 uses Common;
 
 procedure RetourneCarte(j : Integer; var carte : TCard);
 
-function Victoire(g : Grid) : Boolean;
+function Victoire(g : TGrid) : Boolean;
 
 
 var cartePrecedente : TCard ;
@@ -22,6 +23,11 @@ var i : Integer;
 
 	BEGIN
 		i:=0;
+		if (not carte.Revealed) then
+			BEGIN
+			carte.Revealed := True;
+			writeln('Carte retournee');
+			END;
 		if i=0 then
 			BEGIN
 			inc(i);
@@ -39,7 +45,7 @@ var i : Integer;
 	END;
 
 {Verifie si la partie est gagnée, c'est-a-dire, si toutes les cartes sont retournees}
-function Victoire(g : Grid) : Boolean;
+function Victoire(g : TGrid) : Boolean;
 	BEGIN
 	
 	END;
