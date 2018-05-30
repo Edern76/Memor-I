@@ -59,9 +59,44 @@ function InitRender() : PSDL_SURFACE;
 function LoadSprites() : SpritesList;
 	BEGIN
 	LoadSprites[0].Name := 'TestBack';
-	LoadSprites[0].Image := IMG_Load('Images/Martin of Clubs.png');
+	LoadSprites[0].Image := IMG_Load('Images/Card back.png');
 	LoadSprites[1].Name := 'Cursor';
 	LoadSprites[1].Image := IMG_Load('Images/Cursor.png');
+	LoadSprites[2].Name := 'Edouard';
+	LoadSprites[2].Image := IMG_Load('Images/Edouard of Clubs.png');
+	LoadSprites[3].Name := 'Gawein';
+	LoadSprites[3].Image := IMG_Load('Images/G of Diamonds.png');
+	LoadSprites[4].Name := 'Gabriel';
+	LoadSprites[4].Image := IMG_Load('Images/Gabriel of Spades.png');
+	LoadSprites[5].Name := 'Ionela';
+	LoadSprites[5].Image := IMG_Load('Images/Ionela of Hearts.png');
+	LoadSprites[6].Name := 'Marie';
+	LoadSprites[6].Image := IMG_Load('Images/Joker Marie.png');
+	LoadSprites[7].Name := 'Martin';
+	LoadSprites[7].Image := IMG_Load('Images/Martin of Clubs.png');
+	LoadSprites[8].Name := 'Mathias';
+	LoadSprites[8].Image := IMG_Load('Images/Mathias of Hearts.png');
+	LoadSprites[9].Name := 'Maxime';
+	LoadSprites[9].Image := IMG_Load('Images/Maxime of Diamonds.png');
+	LoadSprites[10].Name := 'Miruna';
+	LoadSprites[10].Image := IMG_Load('Images/Miruna of Hearts.png');
+	LoadSprites[11].Name := 'Romain';
+	LoadSprites[11].Image := IMG_Load('Images/Romain of Clubs.png');
+	LoadSprites[12].Name := 'Ugo';
+	LoadSprites[12].Image := IMG_Load('Images/U of Spades.png');
+	LoadSprites[13].Name := 'Lea';
+	LoadSprites[13].Image := IMG_Load('Images/Lea of Spades.png');
+	LoadSprites[14].Name := 'Clubs';
+	LoadSprites[14].Image := IMG_Load('Images/Ace of Clubs.png');
+	LoadSprites[15].Name := 'Diamonds';
+	LoadSprites[15].Image := IMG_Load('Images/Ace of Diamonds.png');
+	LoadSprites[16].Name := 'Hearts';
+	LoadSprites[16].Image := IMG_Load('Images/Ace of Hearts.png');
+	LoadSprites[17].Name := 'Spades';
+	LoadSprites[17].Image := IMG_Load('Images/Ace of Spades.png');
+	LoadSprites[18].Name := 'Axel';
+	LoadSprites[18].Image := IMG_Load('Images/Axel of Diamonds.png');
+	
 	END;
 
 
@@ -160,7 +195,7 @@ procedure DrawCard(window : PSDL_SURFACE; card : TCard);
 	if (card.Revealed or card.Selected) then
 		BEGIN
 		//Select sprite corresponding to card image once they are implemented
-		cSprite := G_Sprites[0]; // PLACEHOLDER
+		cSprite := GetSprite(card.CardType.Name);
 		END
 	else
 		BEGIN

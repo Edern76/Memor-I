@@ -103,21 +103,23 @@ procedure CreateRien(types : CardTypes);
 function InitTypes() : CardTypes;
 	BEGIN
 	//Pas une boucle car à terme, les cartes auront probablement des noms/noms de fichier plus expressifs que TestN.png
-	InitTypes[0].Name := 'Card0';
+	//Facile : Devs + Jokers + Debut rangee de devant
+	//Difficile : Facile + le reste
+	InitTypes[0].Name := 'Martin';
 	InitTypes[0].ImgPath := 'Test0.png';
-	InitTypes[1].Name := 'Card1';
+	InitTypes[1].Name := 'Miruna';
 	InitTypes[1].ImgPath := 'Test1.png';
-	InitTypes[2].Name := 'Card2';
+	InitTypes[2].Name := 'Ugo';
 	InitTypes[2].ImgPath := 'Test2.png';
-	InitTypes[3].Name := 'Card3';
+	InitTypes[3].Name := 'Gawein';
 	InitTypes[3].ImgPath := 'Test3.png';
-	InitTypes[4].Name := 'Card4';
+	InitTypes[4].Name := 'Edouard';
 	InitTypes[4].ImgPath := 'Test4.png';
-	InitTypes[5].Name := 'Card5';
+	InitTypes[5].Name := 'Lea';
 	InitTypes[5].ImgPath := 'Test5.png';
-	InitTypes[6].Name := 'Card6';
+	InitTypes[6].Name := 'Marie';
 	InitTypes[6].ImgPath := 'Test6.png';
-	InitTypes[7].Name := 'Card7';
+	InitTypes[7].Name := 'Clubs'; //Remplacer par Joker 2
 	InitTypes[7].ImgPath := 'Test7.png';
 	InitTypes[8].Name := 'Card8';
 	InitTypes[8].ImgPath := 'Test8.png';
