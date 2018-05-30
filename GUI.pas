@@ -39,7 +39,6 @@ procedure DrawGrid(window : PSDL_SURFACE; grid : Grid);
 procedure MoveCursor(dx, dy : Integer);
 
 function GridToGlobalCoords(x,y : Integer) : TCoord;
-function GetDim(easy : boolean) : Integer;
 function GetSprite(name : String) : Sprite;
 
 procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer);
@@ -65,18 +64,7 @@ function LoadSprites() : SpritesList;
 	LoadSprites[1].Image := IMG_Load('Images/Cursor.png');
 	END;
 
-function GetDim(easy : boolean) : Integer;
-	BEGIN
-	if (easy) then
-		BEGIN
-		GetDim := 4;
-		END
-	else
-		BEGIN
-		GetDim := 6;
-		END;
-	END;
-	
+
 function GetSprite(name : String) : Sprite;
 	var i : Integer;
 		found : Boolean;
@@ -148,7 +136,7 @@ procedure GetInput(var win, quit : Boolean);
 function GridToGlobalCoords(x,y : Integer) : TCoord;
 	var totalWidth, startX, totalHeight, startY, dim : Integer;
 	BEGIN
-	dim := GetDim(easy);
+	dim := GetDim();
 		
 	totalWidth := (dim * (SPRITE_DEFAULT_WIDTH + H_PADDING)) - H_PADDING;
 	startX := ((WIDTH - totalWidth) div 2) + X_BIAS;
@@ -195,7 +183,7 @@ procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer);
 procedure MoveCursor(dx, dy : Integer);
 	var dim : Integer;
 	BEGIN
-	dim := GetDim(easy);
+	dim := GetDim();
 	if ((dx >= 0) and (curX < (dim - 1))) then
 		curX := curX + dx;
 	if ((dx <= 0) and (curX > 0)) then
@@ -211,7 +199,7 @@ procedure DrawGrid(window : PSDL_SURFACE; grid : Grid);
 	var i,j,dim : Integer;
 	BEGIN
 
-	dim := GetDim(easy);
+	dim := GetDim();
 	
 	for j := 0 to dim-1 do
 		for i := 0 to dim-1 do

@@ -57,6 +57,7 @@ operator = (t1, t2 : TCardType) b : Boolean;
 
 {Crée la zone de jeu et dispose les cartes}
 function CreateGrid(choices : PossibleChoices) : Grid;
+function GetDim() : Integer;
 
 var easy : Boolean;
 
@@ -74,6 +75,18 @@ operator = (t1, t2 : TCardType) b : Boolean;
 		END
 	END;
 
+function GetDim() : Integer;
+	BEGIN
+	if (easy) then
+		BEGIN
+		GetDim := 4;
+		END
+	else
+		BEGIN
+		GetDim := 6;
+		END;
+	END;
+	
 function InitTypes() : CardTypes;
 	BEGIN
 	//Pas une boucle car à terme, les cartes auront probablement des noms/noms de fichier plus expressifs que TestN.png

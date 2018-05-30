@@ -11,7 +11,7 @@ var window : PSDL_SURFACE;
 BEGIN
 G_sprites := LoadSprites();
 window := InitRender();
-easy := False;
+easy := True;
 win := False;
 quit := False;
 curX := 0;
