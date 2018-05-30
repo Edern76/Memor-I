@@ -14,7 +14,7 @@ randomize();
 G_sprites := LoadSprites();
 window := InitRender();
 types := InitTypes();
-easy := True;
+easy := False;
 win := False;
 quit := False;
 noRedraw := True;
