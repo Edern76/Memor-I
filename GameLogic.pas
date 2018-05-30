@@ -21,32 +21,47 @@ function RetourneCarte(var carte: TCard) : Boolean;
 	BEGIN
 		if ((not t[carte.x][carte.y].Selected) and (not t[carte.x][carte.y].Revealed)) then
 			BEGIN
-			writeln('Revelee avant ' , carte.Revealed);
+			{writeln('Revelee avant ' , carte.Revealed);
 			writeln('Select avant', carte.Selected);
 			writeln('TRevelee avant ' , t[carte.x][carte.y].Revealed);
-			writeln('TSelect avant', t[carte.x][carte.y].Selected);
+			writeln('TSelect avant', t[carte.x][carte.y].Selected);}
 			t[carte.x][carte.y].Selected := True;
-			writeln('Carte retournee');
+			{writeln('Carte retournee');
 			writeln('Revelee apres ' , carte.Revealed);
 			writeln('Select apres ', carte.Selected);
 			writeln('TRevelee apres ' , t[carte.x][carte.y].Revealed);
-			writeln('TSelect apres', t[carte.x][carte.y].Selected);
+			writeln('TSelect apres', t[carte.x][carte.y].Selected);}
+			
+				if (carte.CardType.Name = cartePrecedente.CardType.Name) then
+					begin
+						nbPaire := nbPaire + 1;
+						t[carte.x][carte.y].Revealed := True;
+						x := cartePrecedente.x;
+						y := cartePrecedente.y;
+						t[x][y].Revealed := True;
+						cartePrecedente := rien;
+						RetourneCarte := True;
+					end
+				else
+					BEGIN
+					if (cartePrecedente.CardType.Name <> rien.CardType.Name) then
+						BEGIN
+						writeln('Type 1 :', carte.CardType.Name);
+						writeln('Type 2 :', cartePrecedente.CardType.Name);
+						RetourneCarte := False;
+						cartePrecedente := rien;
+						END
+					else
+						BEGIN
+						writeln('Type 1 :', carte.CardType.Name);
+						writeln('Type 2 (normalement rien) :', cartePrecedente.CardType.Name);
+						RetourneCarte := True;
+						cartePrecedente := carte;
+						END;
+				END;
 			END;
 			
-		if carte.CardType = cartePrecedente.CardType then
-			begin
-				nbPaire := nbPaire + 1;
-				t[carte.x][carte.y].Revealed := True;
-				x := cartePrecedente.x;
-				y := cartePrecedente.y;
-				t[x][y].Revealed := True;
-				cartePrecedente := rien;
-				RetourneCarte := True;
-			end
-		else
-			BEGIN
-			RetourneCarte := False;
-			END;
+		
 			
 		
 	END;

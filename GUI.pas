@@ -30,7 +30,7 @@ Type SpritesList = array[0..100] of Sprite;
 function InitRender() : PSDL_SURFACE;
 function LoadSprites() : SpritesList;
 
-procedure GetInput(var win, quit : Boolean);
+function GetInput() : Boolean;
 
 procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer)  overload;
 procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y, width, height : Integer)  overload;
@@ -140,16 +140,15 @@ procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y, width, height:
 	SDL_BlitSurface(sprite.Image, NIL, window, @destination);
 	END;
 	
-procedure GetInput(var win, quit : Boolean);
+function GetInput() : Boolean;
 	//273 : UP
 	//274 : DOWN
 	//275 : RIGHT
 	//276 : LEFT
 	var event : PSDL_EVENT;
-		t : Grid;
 	BEGIN
+	GetInput := True;
 	SDL_PollEvent(event);
-	t := CreateGrid(InitChoices(InitTypes()));
 	case event.type_ of
 		SDL_QUITEV : quit := True;
 		SDL_KEYDOWN : 
@@ -160,8 +159,7 @@ procedure GetInput(var win, quit : Boolean);
 				274 : MoveCursor(0, 1);
 				275 : MoveCursor(1, 0);
 				276 : MoveCursor(-1, 0);
-				13 : RetourneCarte(t[curX][curY]);
-				
+				13 : GetInput := RetourneCarte(t[curX][curY]);
 			END;
 			END
 		

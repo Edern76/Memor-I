@@ -39,6 +39,8 @@ Type Grid = array[0..MAX_DIM - 1, 0..MAX_DIM-1] of TCard; //Oui, j'aime quand le
 {Tous les types de cartes}
 Type CardTypes = array[0..MAX_TYPES] of TCardType;
 
+Type PBool = ^Boolean;
+
 {Crée le tableau renfermant tous les types de cartes possibles et imaginables}
 function InitTypes() : CardTypes;
 
@@ -60,10 +62,12 @@ operator = (t1, t2 : TCardType) b : Boolean;
 {Crée la zone de jeu et dispose les cartes}
 function CreateGrid(choices : PossibleChoices) : Grid;
 function GetDim() : Integer;
+procedure ClearSelect();
 
-var easy : Boolean;
+var easy, win, quit : Boolean;
 	rien : TCard;
 	t : Grid;
+	dispWTime : Integer;
 
 implementation
 
@@ -179,8 +183,7 @@ procedure RemoveFromArray(var arr : PossibleChoices; index : Integer);
 procedure RandomCard(var choices : PossibleChoices; var chosenType : TCardType);
 	var index, max : Integer;
 	BEGIN
-	randomize();
-	max := Length(choices) - 2; //Random retourne un nombre strictement inférieur à la borne max
+	max := Length(choices);
 	index := Random(max); //On détermine le numéro du type à choisir
 	choices[index].UsesLeft := choices[index].UsesLeft - 1;
 	chosenType := choices[index].CardType;
@@ -211,8 +214,25 @@ function CreateGrid(choices : PossibleChoices) : Grid;
 			CreateGrid[i][j].Revealed := False;
 			CreateGrid[i][j].Selected := False;
 			END;
+			
+	for j:= maxDim-1 downto 0 do
+		BEGIN
+		for i:=0 to maxDim-1 do
+			BEGIN
+			write(CreateGrid[i][j].CardType.Name, ' ');
+			END;
+		writeln();
+		END;
 	END;
 	
+procedure ClearSelect();
+	var i,j, dim : Integer;
+	BEGIN
+	dim := GetDim();
+	for i:= 0 to dim-1 do
+		for j:=0 to dim-1 do
+			t[i][j].Selected := False;
 	
+	END;
 END.
 
