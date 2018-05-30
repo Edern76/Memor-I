@@ -123,9 +123,9 @@ function InitTypes() : CardTypes;
 	InitTypes[5].ImgPath := 'Test5.png';
 	InitTypes[6].Name := 'Marie';
 	InitTypes[6].ImgPath := 'Test6.png';
-	InitTypes[7].Name := 'Clubs'; //Remplacer par Joker 2
+	InitTypes[7].Name := 'Joker'; //Remplacer par Joker 2
 	InitTypes[7].ImgPath := 'Test7.png';
-	InitTypes[8].Name := 'Card8';
+	InitTypes[8].Name := 'Clubs';
 	InitTypes[8].ImgPath := 'Test8.png';
 	InitTypes[9].Name := 'Card9';
 	InitTypes[9].ImgPath := 'Test9.png';

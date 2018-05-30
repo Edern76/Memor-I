@@ -96,6 +96,8 @@ function LoadSprites() : SpritesList;
 	LoadSprites[17].Image := IMG_Load('Images/Ace of Spades.png');
 	LoadSprites[18].Name := 'Axel';
 	LoadSprites[18].Image := IMG_Load('Images/Axel of Diamonds.png');
+	LoadSprites[19].Name := 'Joker';
+	LoadSprites[19].Image := IMG_Load('Images/Joker.png');
 	
 	END;
 
