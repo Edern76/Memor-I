@@ -4,7 +4,7 @@ interface
 
 uses Common;
 
-procedure RetourneCarte(var carte : TCard; var t : Grid);
+function RetourneCarte(var carte : TCard) : Boolean;
 
 function Victoire(i,j : Integer; g : Grid) : Boolean;
 
@@ -15,25 +15,38 @@ var cartePrecedente : TCard ; //Faudrait initialiser avec une valeur bullshit
 implementation
 
 {Retourne une carte et verifie si une paire a ete formee}
-procedure RetourneCarte(var carte: TCard;  var t : Grid);
+function RetourneCarte(var carte: TCard) : Boolean;
 	var x,y : Integer;
 	
 	BEGIN
-		if (not carte.Selected) then
+		if ((not t[carte.x][carte.y].Selected) and (not t[carte.x][carte.y].Revealed)) then
 			BEGIN
-			carte.Selected := True;
+			writeln('Revelee avant ' , carte.Revealed);
+			writeln('Select avant', carte.Selected);
+			writeln('TRevelee avant ' , t[carte.x][carte.y].Revealed);
+			writeln('TSelect avant', t[carte.x][carte.y].Selected);
+			t[carte.x][carte.y].Selected := True;
 			writeln('Carte retournee');
+			writeln('Revelee apres ' , carte.Revealed);
+			writeln('Select apres ', carte.Selected);
+			writeln('TRevelee apres ' , t[carte.x][carte.y].Revealed);
+			writeln('TSelect apres', t[carte.x][carte.y].Selected);
 			END;
 			
 		if carte.CardType = cartePrecedente.CardType then
 			begin
 				nbPaire := nbPaire + 1;
-				carte.Revealed := True;
+				t[carte.x][carte.y].Revealed := True;
 				x := cartePrecedente.x;
 				y := cartePrecedente.y;
 				t[x][y].Revealed := True;
-				
-			end;
+				cartePrecedente := rien;
+				RetourneCarte := True;
+			end
+		else
+			BEGIN
+			RetourneCarte := False;
+			END;
 			
 		
 	END;
@@ -44,13 +57,15 @@ function Victoire(i,j : Integer; g : Grid) : Boolean;
 	i:=0; j:=0;
 	repeat
 		inc(i);
-		repeat
-			inc(j);
-			
-		until j = GetDim;
-			
-	until (g[i][j].Revealed = False) OR ((i=GetDim()) AND (j=GetDim()));
-					
+		while (g[i][j].Revealed = True) do
+			repeat
+				inc(j);
+			until j=GetDim();
+
+		if i = GetDim() then
+			begin
+			end;
+	until (True);				
 			
 			
 	END;

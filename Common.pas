@@ -53,6 +53,8 @@ procedure RemoveFromArray(var arr : PossibleChoices; index : Integer);
 {Obtiens un type de carte aléatoire de la liste des choix restants, et modifie celle-ci en conséquence}
 procedure RandomCard(var choices : PossibleChoices; var chosenType : TCardType);
 
+procedure CreateRien(types : CardTypes) ;
+
 operator = (t1, t2 : TCardType) b : Boolean;
 
 {Crée la zone de jeu et dispose les cartes}
@@ -60,6 +62,8 @@ function CreateGrid(choices : PossibleChoices) : Grid;
 function GetDim() : Integer;
 
 var easy : Boolean;
+	rien : TCard;
+	t : Grid;
 
 implementation
 
@@ -85,6 +89,15 @@ function GetDim() : Integer;
 		BEGIN
 		GetDim := 6;
 		END;
+	END;
+	
+procedure CreateRien(types : CardTypes);
+	BEGIN
+	rien.x := -1;
+	rien.y := -1;
+	rien.Revealed := False;
+	rien.Selected := False;
+	rien.CardType := types[18];
 	END;
 	
 function InitTypes() : CardTypes;

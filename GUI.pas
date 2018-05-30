@@ -111,9 +111,10 @@ procedure GetInput(var win, quit : Boolean);
 	//275 : RIGHT
 	//276 : LEFT
 	var event : PSDL_EVENT;
+		t : Grid;
 	BEGIN
 	SDL_PollEvent(event);
-	
+	t := CreateGrid(InitChoices(InitTypes()));
 	case event.type_ of
 		SDL_QUITEV : quit := True;
 		SDL_KEYDOWN : 
@@ -124,7 +125,7 @@ procedure GetInput(var win, quit : Boolean);
 				274 : MoveCursor(0, 1);
 				275 : MoveCursor(1, 0);
 				276 : MoveCursor(-1, 0);
-				13 : writeln('Entree');
+				13 : RetourneCarte(t[curX][curY]);
 				
 			END;
 			END
@@ -205,7 +206,7 @@ procedure DrawGrid(window : PSDL_SURFACE; grid : Grid);
 	for j := 0 to dim-1 do
 		for i := 0 to dim-1 do
 			BEGIN		
-			DrawCard(window, grid[i][j]);
+			DrawCard(window, t[i][j]);
 			END
 	END;
 
