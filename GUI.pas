@@ -136,6 +136,7 @@ procedure GetInput(var win, quit : Boolean);
 				274 : MoveCursor(0, 1);
 				275 : MoveCursor(1, 0);
 				276 : MoveCursor(-1, 0);
+				
 			END;
 			END
 		
