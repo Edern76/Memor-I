@@ -2,7 +2,7 @@
 unit GUI;
 
 interface
-uses Common, sdl, sdl_image;
+uses Common, sdl, sdl_image, GameLogic;
 
 const MAX_SPRITES = 100;
 const HEIGHT = 900;
@@ -59,7 +59,7 @@ function InitRender() : PSDL_SURFACE;
 function LoadSprites() : SpritesList;
 	BEGIN
 	LoadSprites[0].Name := 'TestBack';
-	LoadSprites[0].Image := IMG_Load('Images/TestBack.png');
+	LoadSprites[0].Image := IMG_Load('Images/Martin of Clubs.png');
 	LoadSprites[1].Name := 'Cursor';
 	LoadSprites[1].Image := IMG_Load('Images/Cursor.png');
 	END;
@@ -124,6 +124,7 @@ procedure GetInput(var win, quit : Boolean);
 				274 : MoveCursor(0, 1);
 				275 : MoveCursor(1, 0);
 				276 : MoveCursor(-1, 0);
+				13 : writeln('Entree');
 				
 			END;
 			END

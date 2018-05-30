@@ -37,7 +37,7 @@ Type PossibleChoices = array of TCardChoice; //Taille volontairement omise, cela
 Type Grid = array[0..MAX_DIM - 1, 0..MAX_DIM-1] of TCard; //Oui, j'aime quand les tableaux commencent à 0 (et c'est surtout plus pratique parce que random est indexé à 0)
 
 {Tous les types de cartes}
-Type CardTypes = array[0..MAX_TYPES-1] of TCardType;
+Type CardTypes = array[0..MAX_TYPES] of TCardType;
 
 {Crée le tableau renfermant tous les types de cartes possibles et imaginables}
 function InitTypes() : CardTypes;
@@ -126,6 +126,8 @@ function InitTypes() : CardTypes;
 	InitTypes[16].ImgPath := 'Test16.png';
 	InitTypes[17].Name := 'Card17';
 	InitTypes[17].ImgPath := 'Test17.png';
+	InitTypes[18].Name := 'Rien';
+	InitTypes[18].Name := 'Rien.png';
 	END;
 	
 function InitChoices(types: CardTypes) : PossibleChoices;
