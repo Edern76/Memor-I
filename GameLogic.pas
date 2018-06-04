@@ -10,7 +10,7 @@ function Victoire(i,j : Integer; g : Grid) : Boolean;
 
 
 var cartePrecedente : TCard ; //Faudrait initialiser avec une valeur bullshit
-	nbPaire : Integer;
+	nbCoups : Integer;
 
 implementation
 
@@ -34,7 +34,7 @@ function RetourneCarte(var carte: TCard) : Boolean;
 			
 				if (carte.CardType.Name = cartePrecedente.CardType.Name) then
 					begin
-						nbPaire := nbPaire + 1;
+						nbCoups := nbCoups + 1;
 						t[carte.x][carte.y].Revealed := True;
 						x := cartePrecedente.x;
 						y := cartePrecedente.y;
@@ -46,6 +46,7 @@ function RetourneCarte(var carte: TCard) : Boolean;
 					BEGIN
 					if (cartePrecedente.CardType.Name <> rien.CardType.Name) then
 						BEGIN
+						nbCoups := nbCoups + 1;
 						writeln('Type 1 :', carte.CardType.Name);
 						writeln('Type 2 :', cartePrecedente.CardType.Name);
 						RetourneCarte := False;

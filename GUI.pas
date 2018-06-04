@@ -2,7 +2,7 @@
 unit GUI;
 
 interface
-uses Common, sdl, sdl_image, GameLogic;
+uses Common, sdl, sdl_image, sdl_ttf, GameLogic, SysUtils;
 
 const MAX_SPRITES = 100;
 const HEIGHT = 900;
@@ -57,6 +57,9 @@ procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer);
 var G_sprites : SpritesList;
 	curX, curY : Integer;
 	cardRanges : RangeList;
+	font : pointer;
+	colorFont, colorFont2 : TSDL_COLOR;
+	counter : PSDL_SURFACE;
 
 implementation
 procedure InitMouse();
@@ -68,8 +71,9 @@ function InitRender() : PSDL_SURFACE;
 	BEGIN
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_EnableKeyRepeat(4000, 50000);
-	
-
+	TTF_Init();
+	colorFont.r := 255; colorFont.g := 255; colorFont.b:=255;
+	font := TTF_OpenFont('Poppins-BoldItalic.ttf', 12);
 	InitRender := SDL_SETVIDEOMODE(WIDTH, HEIGHT, 32, SDL_HWSURFACE);
 	SDL_WM_SetCaption('Memor-I', 'MemorI');
 	END;
@@ -116,7 +120,8 @@ function LoadSprites() : SpritesList;
 	LoadSprites[18].Image := IMG_Load('Images/Axel of Diamonds.png');
 	LoadSprites[19].Name := 'Joker';
 	LoadSprites[19].Image := IMG_Load('Images/Joker.png');
-	
+	LoadSprites[20].Name := 'Background';
+	LoadSprites[20].Image := IMG_Load('Images/playfield_resize.png');
 	END;
 
 
@@ -293,8 +298,16 @@ procedure MoveCursor(dx, dy : Integer);
 
 procedure DrawGrid(window : PSDL_SURFACE; grid : Grid);
 	var i,j,dim : Integer;
+		nbMoves : String;
+		textField : PSDL_RECT;
 	BEGIN
-
+	DrawSprite(window, GetSprite('Background'), 0, 0);
+	new(textField);
+	nbMoves := 'Moves : ' + IntToStr(nbCoups);
+	counter := TTF_RENDERTEXT_SOLID(font, PChar(nbMoves), colorFont);
+	textField.x := 20;
+	textField.y := 5;
+	SDL_BLITSURFACE(counter, NIL, window, textField);
 	dim := GetDim();
 	
 	for j := 0 to dim-1 do

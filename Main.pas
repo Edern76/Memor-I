@@ -12,6 +12,7 @@ var window : PSDL_SURFACE;
 procedure CreateGame();
 	BEGIN
 	randomize();
+	nbCoups := 0;
 	easy := False;
 	win := False;
 	quit := False;
