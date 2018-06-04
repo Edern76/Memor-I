@@ -27,6 +27,14 @@ end;
 
 Type SpritesList = array[0..100] of Sprite;
 
+Type TRange = record
+	start : TCoord;
+	stop : TCoord;
+end;
+
+Type RangeList = array[0..5,0..5] of TRange;
+
+
 function InitRender() : PSDL_SURFACE;
 function LoadSprites() : SpritesList;
 
@@ -40,11 +48,14 @@ procedure MoveCursor(dx, dy : Integer);
 
 function GridToGlobalCoords(x,y : Integer) : TCoord;
 function GetSprite(name : String) : Sprite;
+function GetRange() : RangeList;
 
 procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer);
 
+
 var G_sprites : SpritesList;
 	curX, curY : Integer;
+	cardRanges : RangeList;
 
 implementation
 
@@ -53,6 +64,7 @@ function InitRender() : PSDL_SURFACE;
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_EnableKeyRepeat(1000, 100);
 	
+	cardRanges := GetRange();
 	InitRender := SDL_SETVIDEOMODE(WIDTH, HEIGHT, 32, SDL_HWSURFACE);
 	END;
 	
@@ -148,8 +160,11 @@ function GetInput() : Boolean;
 	//275 : RIGHT
 	//276 : LEFT
 	var event : PSDL_EVENT;
+		mX, mY, i, j, dim : Integer;
+		r : TRange;
 	BEGIN
 	GetInput := True;
+	dim := GetDim();
 	SDL_PollEvent(event);
 	case event.type_ of
 		SDL_QUITEV : quit := True;
@@ -163,10 +178,35 @@ function GetInput() : Boolean;
 				276 : MoveCursor(-1, 0);
 				13 : GetInput := RetourneCarte(t[curX][curY]);
 			END;
-			END
-		
+			END;
+		SDL_MOUSEMOTION :
+			BEGIN
+			mX := event.motion.x;
+			mY := event.motion.y;
+			for i:=0 to dim do
+				for j:=0 to dim do
+					BEGIN
+					r := cardRanges[i][j];
+					if (((mX >= r.start.x) and (mX <= r.stop.x)) and ((mY >= r.start.y) and (mY <= r.stop.y))) then
+						BEGIN
+						writeln('Mouse over card at ', i, ';', j);
+						curX := i;
+						curY := j;
+						break;
+						END;
+					END;
+			END;
+		SDL_MOUSEBUTTONDOWN:
+			BEGIN
+			if (event.button.button = 1) then
+				BEGIN
+				writeln('Clic gauche');
+				GetInput := RetourneCarte(t[curX][curY]);
+				END
+			END;
 	END;
-	END;
+END;
+	
 
 
 
@@ -184,6 +224,19 @@ function GridToGlobalCoords(x,y : Integer) : TCoord;
 	GridToGlobalCoords.y := startY + y*(totalHeight div dim);
 	
 	
+	END;
+	
+function GetRange() : RangeList;
+	var relX, relY, dim : Integer;
+	BEGIN
+	dim := GetDim();
+	for relX:=0 to dim-1 do
+		for relY:=0 to dim-1 do
+			BEGIN
+			GetRange[relX][relY].start := GridToGlobalCoords(relX, relY);
+			GetRange[relX][relY].stop.x := GridToGlobalCoords(relX, relY).x + SPRITE_DEFAULT_WIDTH;
+			GetRange[relX][relY].stop.y := GridToGlobalCoords(relX, relY).y + SPRITE_DEFAULT_HEIGHT;
+			END
 	END;
 
 procedure DrawCard(window : PSDL_SURFACE; card : TCard);

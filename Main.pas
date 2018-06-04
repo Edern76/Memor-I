@@ -11,13 +11,12 @@ var window : PSDL_SURFACE;
 
 BEGIN
 randomize();
-G_sprites := LoadSprites();
-window := InitRender();
-types := InitTypes();
 easy := False;
 win := False;
 quit := False;
 noRedraw := True;
+G_sprites := LoadSprites();
+types := InitTypes();
 dispWTime := DEFAULT_WAIT;
 dispWTime := 1000;
 curX := 0;
@@ -27,6 +26,8 @@ cartePrecedente := rien;
 //SDL_SetRenderDrawColor(window, 255, 255; 255, SDL_ALPHA_OPAQUE);
 //SDL_RenderClear(window);
 t := CreateGrid(InitChoices(types));
+window := InitRender();
+
 repeat
 	SDL_Delay(33); //Limite le jeu à 60 FPS, problème d'inputs dédoublés sinon.
 	SDL_FillRect(window, 0,0);
