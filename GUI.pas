@@ -62,7 +62,7 @@ implementation
 function InitRender() : PSDL_SURFACE;
 	BEGIN
 	SDL_Init(SDL_INIT_VIDEO);
-	SDL_EnableKeyRepeat(1000, 100);
+	SDL_EnableKeyRepeat(4000, 50000);
 	
 	cardRanges := GetRange();
 	InitRender := SDL_SETVIDEOMODE(WIDTH, HEIGHT, 32, SDL_HWSURFACE);

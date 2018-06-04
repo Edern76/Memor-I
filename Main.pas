@@ -29,7 +29,7 @@ t := CreateGrid(InitChoices(types));
 window := InitRender();
 
 repeat
-	SDL_Delay(33); //Limite le jeu à 60 FPS, problème d'inputs dédoublés sinon.
+	SDL_Delay(20); //Limite le jeu à une valeur fixe de FPS, problème d'inputs dédoublés sinon.
 	SDL_FillRect(window, 0,0);
 	DrawGrid(window, t);
 	if (not noRedraw) then
