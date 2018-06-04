@@ -36,6 +36,7 @@ Type RangeList = array[0..5,0..5] of TRange;
 
 
 function InitRender() : PSDL_SURFACE;
+procedure InitMouse();
 function LoadSprites() : SpritesList;
 
 function GetInput() : Boolean;
@@ -58,14 +59,19 @@ var G_sprites : SpritesList;
 	cardRanges : RangeList;
 
 implementation
+procedure InitMouse();
+	BEGIN
+	cardRanges := GetRange();
+	END;
 
 function InitRender() : PSDL_SURFACE;
 	BEGIN
 	SDL_Init(SDL_INIT_VIDEO);
 	SDL_EnableKeyRepeat(4000, 50000);
 	
-	cardRanges := GetRange();
+
 	InitRender := SDL_SETVIDEOMODE(WIDTH, HEIGHT, 32, SDL_HWSURFACE);
+	SDL_WM_SetCaption('Memor-I', 'MemorI');
 	END;
 	
 function LoadSprites() : SpritesList;
