@@ -95,6 +95,7 @@ function LoadLeaderboards() : Leaderboard;
 		assign(lFile, fileName);
 		reset(lFile);
 		read(lFile, LoadLeaderboards);
+		close(lFile);
 		END
 	else
 		BEGIN
