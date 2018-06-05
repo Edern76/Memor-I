@@ -17,6 +17,11 @@ Type TCoord = record
 	x, y : Integer;
 end;
 
+Type THighScore = record
+	score : Integer
+	name : String
+end;
+
 {Une carte individuelle en elle même. Contient sa position, son statut et son type (voir plus haut)}
 Type TCard = record
 	x, y : Integer;
