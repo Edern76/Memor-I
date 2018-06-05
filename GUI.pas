@@ -13,6 +13,9 @@ const SPRITE_DEFAULT_WIDTH = 80;
 const CURSOR_WIDTH = 2;
 const CURSOR_HEIGHT = 2;
 
+const FRAME_WIDTH = 640;
+const FRAME_HEIGHT = 450;
+
 const V_PADDING = 20;
 const H_PADDING = 80;
 
@@ -122,6 +125,10 @@ function LoadSprites() : SpritesList;
 	LoadSprites[19].Image := IMG_Load('Images/Joker.png');
 	LoadSprites[20].Name := 'Background';
 	LoadSprites[20].Image := IMG_Load('Images/playfield_resize.png');
+	LoadSprites[21].Name := 'High';
+	LoadSprites[21].Image := IMG_Load('Images/VictoryFrame.png');
+	LoadSprites[22].Name := 'NoHigh';
+	LoadSprites[22].Image := IMG_Load('Images/NoHighFrame.png');
 	END;
 
 

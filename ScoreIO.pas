@@ -41,8 +41,10 @@ procedure InitScoreIO();
 
 procedure AddScore(var arr : Leaderboard; score : THighScore; pos : Integer);
 	var i : Integer;
+		tmp : Leaderboard;
 
 	BEGIN
+	tmp := InitLeaderboard();
 	if (not ((pos >= 0) and (pos <= MAX_SCORES-1))) then
 		writeln('ERROR : Invalid score append position');
 	
@@ -58,11 +60,16 @@ procedure AddScore(var arr : Leaderboard; score : THighScore; pos : Integer);
 			END
 		else
 			BEGIN
+			for i:=0 to pos-1 do
+				BEGIN
+				tmp[i] := arr[i];
+				END;
 			for i:= pos to MAX_SCORES - 2 do
 				BEGIN
-				arr[i+1] := arr[i];
+				tmp[i+1] := arr[i];
 				END;
-			arr[pos] := score;
+			tmp[pos] := score;
+			arr := tmp;
 			END;
 		END;
 	END;

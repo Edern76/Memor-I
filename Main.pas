@@ -9,6 +9,22 @@ var window : PSDL_SURFACE;
 	types : CardTypes;
 	noRedraw : Boolean;
 	
+procedure DisplayScores();
+	var i : Integer;
+		arr : Leaderboard;
+	BEGIN
+	arr := LoadLeaderboards();
+	for i:=0 to MAX_SCORES - 1 do
+		BEGIN
+		if (arr[i].score <> -1) then
+			BEGIN
+			writeln(i+1);
+			writeln('Name : ', arr[i].name);
+			writeln('Score : ', arr[i].score);
+			END;
+		END;
+	END;
+
 procedure CreateGame();
 	BEGIN
 	randomize();
@@ -68,23 +84,32 @@ procedure PlayGame();
 		SDL_FillRect(window, 0,0);
 		DrawGrid(window, t);
 		DrawCursor(window, curX, curY);
-		SDL_Flip(window);
+		
 		arr := LoadLeaderboards();
 		scoreIndex := GetPossibleIndex(arr, nbCoups);
 		if (scoreIndex <> -1) then
 			BEGIN
+			DrawSprite(window, GetSprite('High'), (WIDTH - FRAME_WIDTH) div 2, (HEIGHT - FRAME_HEIGHT) div 2, FRAME_WIDTH, FRAME_HEIGHT);
+			SDL_Flip(window);
 			writeln('Veuillez entrer votre nom');
 			readln(score.name);
 			score.score := nbCoups;
 			AddScore(arr, score, scoreIndex);
 			writeln('Classement : ', scoreIndex + 1);
 			SaveLeaderboards(arr);
-			END;
+			END
+		else
+			BEGIN
+			DrawSprite(window, GetSprite('NoHigh'), (WIDTH - FRAME_WIDTH) div 2, (HEIGHT - FRAME_HEIGHT) div 2, FRAME_WIDTH, FRAME_HEIGHT);
+			SDL_Flip(window);
+			END
 		END;
 	END;
 BEGIN
 window := InitRender();
+G_sprites := LoadSprites();
 createGame();
+displayScores();
 playGame();
 END.
 
