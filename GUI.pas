@@ -16,6 +16,9 @@ const CURSOR_HEIGHT = 2;
 const FRAME_WIDTH = 640;
 const FRAME_HEIGHT = 450;
 
+const B_BUTTON_WIDTH = 372;
+const B_BUTTON_HEIGHT = 72;
+
 const V_PADDING = 20;
 const H_PADDING = 80;
 
@@ -43,6 +46,7 @@ procedure InitMouse();
 function LoadSprites() : SpritesList;
 
 function GetInput() : Boolean;
+function GetMenuInput() : Boolean;
 
 procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y : Integer)  overload;
 procedure DrawSprite(window : PSDL_SURFACE; sprite : Sprite; x,y, width, height : Integer)  overload;
@@ -55,7 +59,7 @@ function GetSprite(name : String) : Sprite;
 function GetRange() : RangeList;
 
 procedure DrawCursor(window : PSDL_SURFACE; x,y : Integer);
-
+procedure DrawMenu(window : PSDL_SURFACE);
 
 var G_sprites : SpritesList;
 	curX, curY : Integer;
@@ -129,6 +133,8 @@ function LoadSprites() : SpritesList;
 	LoadSprites[21].Image := IMG_Load('Images/VictoryFrame.png');
 	LoadSprites[22].Name := 'NoHigh';
 	LoadSprites[22].Image := IMG_Load('Images/NoHighFrame.png');
+	LoadSprites[23].Name := 'Menu';
+	LoadSprites[23].Image := IMG_Load('Images/Memor-IMenu.png');
 	END;
 
 
@@ -225,7 +231,43 @@ function GetInput() : Boolean;
 	END;
 END;
 	
-
+function GetMenuInput() : Boolean;
+	//273 : UP
+	//274 : DOWN
+	//275 : RIGHT
+	//276 : LEFT
+	var event : PSDL_EVENT;
+		mX, mY, i, j: Integer;
+		r : TRange;
+	BEGIN
+	GetMenuInput := False;
+	SDL_PollEvent(event);
+	case event.type_ of
+		SDL_MOUSEMOTION :
+			BEGIN
+			mX := event.motion.x;
+			mY := event.motion.y;
+					BEGIN
+					{r := cardRanges[i][j];
+					if (((mX >= r.start.x) and (mX <= r.stop.x)) and ((mY >= r.start.y) and (mY <= r.stop.y))) then
+						BEGIN
+						writeln('Mouse over card at ', i, ';', j);
+						curX := i;
+						curY := j;
+						break;
+						END;}
+					END;
+			END;
+		SDL_MOUSEBUTTONDOWN:
+			BEGIN
+			if (event.button.button = 1) then
+				BEGIN
+				writeln('Clic gauche');
+				GetMenuInput := True;
+				END
+			END;
+	END;
+END;
 
 
 function GridToGlobalCoords(x,y : Integer) : TCoord;
@@ -324,6 +366,10 @@ procedure DrawGrid(window : PSDL_SURFACE; grid : Grid);
 			END
 	END;
 
+procedure DrawMenu(window : PSDL_SURFACE);
+	BEGIN
+	DrawSprite(window, GetSprite('Menu'), 0, 0, WIDTH, HEIGHT);
+	END;
 END.
 
 

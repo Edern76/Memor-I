@@ -7,7 +7,7 @@ const DEFAULT_WAIT = 10000;
 
 var window : PSDL_SURFACE;
 	types : CardTypes;
-	noRedraw : Boolean;
+	noRedraw, start : Boolean;
 	
 procedure DisplayScores();
 	var i : Integer;
@@ -108,6 +108,12 @@ procedure PlayGame();
 BEGIN
 window := InitRender();
 G_sprites := LoadSprites();
+start := False;
+repeat
+	DrawMenu(window);
+	SDL_Flip(window);
+	start := GetMenuInput();
+until (start);
 createGame();
 displayScores();
 playGame();
