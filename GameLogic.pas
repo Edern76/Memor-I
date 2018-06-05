@@ -2,11 +2,11 @@ unit GameLogic;
 
 interface
 
-uses Common;
+uses Common, ScoreIO;
 
 function RetourneCarte(var carte : TCard) : Boolean;
 
-function Victoire(i,j : Integer; g : Grid) : Boolean;
+function Victoire() : Boolean;
 
 
 var cartePrecedente : TCard ; //Faudrait initialiser avec une valeur bullshit
@@ -68,24 +68,20 @@ function RetourneCarte(var carte: TCard) : Boolean;
 	END;
 
 {Verifie si la partie est gagnée, c'est-a-dire, si toutes les cartes sont retournees}
-function Victoire(i,j : Integer; g : Grid) : Boolean;
-	BEGIN
-	i:=0; j:=0;
-	repeat
-		inc(i);
-		while (g[i][j].Revealed = True) do
-			repeat
-				inc(j);
-			until j=GetDim();
-
-		if i = GetDim() then
-			begin
-			end;
-	until (True);				
-			
-			
+function Victoire() : Boolean;
+	var i,j : Integer;
+	BEGIN		
+	Victoire := True;
+	for i := 0 to GetDim() - 1 do
+		for j := 0 to GetDim() - 1 do
+			BEGIN
+			if (not t[i][j].Revealed) then
+				BEGIN
+				Victoire := False;
+				break;
+				END;
+			END;
 	END;
-	
 	
 END.
 

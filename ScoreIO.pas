@@ -1,7 +1,10 @@
 Unit ScoreIO;
 
 interface
-cosnt MAX_SCORES := 10;
+uses SysUtils, Common;
+
+const MAX_SCORES = 10;
+
 Type THighScore = record
 	score : Integer;
 	name : String;
@@ -13,14 +16,27 @@ procedure AddScore(var arr : Leaderboard; score : THighScore; pos : Integer);
 procedure InitScoreIO();
 
 function InitLeaderboard() : Leaderboard;
+function LoadLeaderboards() : Leaderboard;
+procedure SaveLeaderboards(arr : Leaderboard);
+
+function GetPossibleIndex(arr : Leaderboard; score : Integer) : Integer;
+procedure ProcessScore(s : THighScore);
+
+
 
 var nullScore : THighScore;
+	fileName : String;
 
 implementation
 procedure InitScoreIO();
 	BEGIN
 	nullScore.score := -1;
 	nullScore.name := 'Null';
+	
+	if (easy) then
+		fileName := 'easyScores.dat'
+	else
+		fileName := 'hardScores.dat';
 	END;
 
 procedure AddScore(var arr : Leaderboard; score : THighScore; pos : Integer);
@@ -50,7 +66,7 @@ procedure AddScore(var arr : Leaderboard; score : THighScore; pos : Integer);
 			END;
 		END;
 	END;
-end.
+
 
 function InitLeaderboard() : Leaderboard;
 	var i : Integer;
@@ -60,3 +76,58 @@ function InitLeaderboard() : Leaderboard;
 		InitLeaderboard[i] := nullScore;
 		END
 	END;
+	
+procedure SaveLeaderboards(arr : Leaderboard);
+	var sFile : file of Leaderboard;
+	BEGIN
+	DeleteFile(fileName);
+	assign(sFile, fileName);
+	rewrite(sFile);
+	write(sFile, arr);
+	close(sFile);
+	END;
+
+function LoadLeaderboards() : Leaderboard;
+	var lFile : file of Leaderboard;
+	BEGIN
+	if (FileExists(fileName)) then
+		BEGIN
+		assign(lFile, fileName);
+		reset(lFile);
+		read(lFile, LoadLeaderboards);
+		END
+	else
+		BEGIN
+		LoadLeaderboards := InitLeaderboard();
+		END;
+	END;
+	
+function GetPossibleIndex(arr : Leaderboard; score : Integer) : Integer;
+	var i : Integer;
+	BEGIN
+	GetPossibleIndex := -1;
+	for i:= 0 to MAX_SCORES - 1 do
+		BEGIN
+		if ((arr[i].score = -1) or (score < arr[i].score)) then
+			BEGIN
+			GetPossibleIndex := i;
+			break;
+			END;
+		END;
+	END;
+	
+procedure ProcessScore(s : THighScore);
+	var arr : Leaderboard;
+		ind : Integer;
+	BEGIN
+	arr := LoadLeaderboards();
+	ind := GetPossibleIndex(arr, s.score);
+	if (ind <> -1) then
+		BEGIN
+		AddScore(arr, s, ind);
+		END;
+	SaveLeaderboards(arr);
+	END;
+
+	
+end.
