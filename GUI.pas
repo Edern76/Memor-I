@@ -63,7 +63,7 @@ procedure DrawMenu(window : PSDL_SURFACE);
 
 var G_sprites : SpritesList;
 	curX, curY : Integer;
-	cardRanges : RangeList;
+	cardRanges, menuRanges : RangeList;
 	font : pointer;
 	colorFont, colorFont2 : TSDL_COLOR;
 	counter : PSDL_SURFACE;
