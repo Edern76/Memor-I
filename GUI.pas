@@ -135,6 +135,12 @@ function LoadSprites() : SpritesList;
 	LoadSprites[22].Image := IMG_Load('Images/NoHighFrame.png');
 	LoadSprites[23].Name := 'Menu';
 	LoadSprites[23].Image := IMG_Load('Images/Memor-IMenu.png');
+	LoadSprites[24].Name := 'Easy';
+	LoadSprites[24].Image := IMG_Load('Images/Easy 4x4.png');
+	LoadSprites[25].Name := 'Hard';
+	LoadSprites[25].Image := IMG_LOAD('Images/Hard 6x6.png');
+	LoadSprites[26].Name := 'Quit';
+	LoadSprites[26].Image := IMG_Load('Images/Quitter.png');
 	END;
 
 
@@ -367,8 +373,13 @@ procedure DrawGrid(window : PSDL_SURFACE; grid : Grid);
 	END;
 
 procedure DrawMenu(window : PSDL_SURFACE);
+	var x,y, bStartX : Integer;
 	BEGIN
+	bStartX := (WIDTH - B_BUTTON_WIDTH) div 2;
 	DrawSprite(window, GetSprite('Menu'), 0, 0, WIDTH, HEIGHT);
+	DrawSprite(window, GetSprite('Easy'), bStartX, 400, B_BUTTON_WIDTH, B_BUTTON_HEIGHT);
+	DrawSprite(window, GetSprite('Hard'), bStartX, 500, B_BUTTON_WIDTH, B_BUTTON_HEIGHT);
+	DrawSprite(window, GetSprite('Quit'), bStartX, 600, B_BUTTON_WIDTH, B_BUTTON_HEIGHT);
 	END;
 END.
 
